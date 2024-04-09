@@ -1,22 +1,30 @@
 import './App.css';
-import { Button, CssBaseline, PaletteMode, ThemeProvider, Typography, createTheme } from '@mui/material';
+import { CssBaseline, PaletteMode, ThemeProvider, createTheme } from '@mui/material';
 import { getDesignTokens } from './themes/theme';
 import React from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { routingUtil } from './utils/routingUtils';
+import NavBar from './components/Navbar';
+import Home from './components/Home';
+import Portfolio from './components/Portfolio';
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+const ColorModeContext = React.createContext({
+  mode: 'light',
+  toggleColorMode: () => {}
+});
 
 function App() {
   const [mode, setMode] = React.useState<PaletteMode>('light');
   const colorMode = React.useMemo(
     () => ({
-      // The dark mode switch would invoke this method
+      mode,
       toggleColorMode: () => {
         setMode((prevMode: PaletteMode) =>
           prevMode === 'light' ? 'dark' : 'light',
         );
       },
     }),
-    [],
+    [mode],
   );
 
   // Update the theme only if the mode changes
@@ -27,16 +35,18 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline enableColorScheme />
         <div className="App">
-          <header className="App-header">
-            <h3>drjr website</h3>
-            <Button color='primary' onClick={colorMode.toggleColorMode} variant='contained'>Example</Button>
-            <Typography variant="body2" color="primary">Example</Typography>
-            <main>Example</main>
-          </header>
+        <BrowserRouter>
+          <NavBar />
+          <Routes>
+            <Route index element={<Home />} />
+            <Route path={routingUtil.routes.portfolio} element={<Portfolio />} />
+          </Routes>
+        </BrowserRouter>
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
 }
 
+export { ColorModeContext };
 export default App;
