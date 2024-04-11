@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
-import { AppBar, Toolbar, Button, IconButton } from '@mui/material';
-import { Link } from 'react-router-dom';
-import logo from '../assets/logo.png';
+import { AppBar, IconButton, Toolbar } from '@mui/material';
+
 import darkMode from '../assets/dark-mode.png';
 import lightMode from '../assets/light-mode.png';
+import chatDark from '../assets/flight-dark.png';
+import chatLight from '../assets/flight-light.png';
 import { routingUtil } from '../utils/routingUtils';
 import { ColorModeContext } from '../App';
+import { Link } from 'react-router-dom';
 
 const NavBar: React.FC = () => {
   const { toggleColorMode, mode } = useContext(ColorModeContext); // Access toggleColorMode from context
@@ -14,12 +16,19 @@ const NavBar: React.FC = () => {
     <AppBar position='static'>
       <Toolbar>
         <IconButton component={Link} to={routingUtil.routes.root} color="inherit">
-          <img src={logo} alt="Logo" style={{ width: '3rem', height: '3rem' }} />
+          {/* Temporary Logo */}
+          <img 
+              src={mode === 'light' ? chatDark : chatLight} 
+              alt={mode === 'light' ? "Chat" : "Chat"} 
+              style={{ width: '2rem', height: '2rem' }} 
+            />
         </IconButton>
         <div style={{ marginLeft: 'auto' }}>
-          <Button component={Link} to={routingUtil.routes.portfolio} color="inherit">
-              Portfolio
-          </Button>
+          {/* <Button component={Link} to={routingUtil.routes.portfolio} color="inherit">
+              Portfolio href="#projects-section"
+          </Button> */}
+          <a className="nav-link active" href="#about-section">About</a>
+          {/* Include hire use icon */}
           <IconButton color='primary' onClick={toggleColorMode}>
             <img 
               src={mode === 'light' ? darkMode : lightMode} 
